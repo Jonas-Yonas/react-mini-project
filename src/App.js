@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import AddUser from './components/users/AddUser'
 import UsersList from './components/users/UsersList'
 
@@ -12,10 +12,16 @@ const App = () => {
   }
 
   return (
-    <>
+    /*
+      if you configured your project to support the
+      empty tag (<> ... </>), you can simply use it
+      in your project. Else and other wise, you can use
+      the native React.Fragment wrapper like as shown below.
+    */
+    <Fragment>
       <AddUser onAddUser={addUserHandler} />
       <UsersList users={usersList} />
-    </>
+    </Fragment>
   );
 }
 
