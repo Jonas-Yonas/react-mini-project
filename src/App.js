@@ -12,10 +12,10 @@ const App = () => {
   }
 
   return (
-    <div className="">
+    <>
       <AddUser onAddUser={addUserHandler} />
       <UsersList users={usersList} />
-    </div>
+    </>
   );
 }
 
