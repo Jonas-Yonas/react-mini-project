@@ -1,0 +1,70 @@
+import React, { useState } from 'react'
+import Wrapper from '../helpers/Wrapper'
+import Button from '../ui/Button'
+import Card from '../ui/Card'
+import ErrorModal from '../ui/ErrorModal'
+import styles from './addUser.module.css'
+
+/* using state to read and manipulate user input */
+
+const AddUser = (props) => {
+    const [enteredUserName, setEnteredUserName] = useState('')
+    const [enteredAge, setEnteredAge] = useState('')
+    const [error, setError] = useState()
+
+    const addUserHandler = (event) => {
+        event.preventDefault()
+        if (enteredUserName.trim().length === 0 || enteredAge.trim().length === 0) {
+            setError({
+                title: 'Invalid input',
+                message: 'Please enter a valid name and age (non-empty values).'
+            })
+            return
+        }
+        if (+enteredAge < 18) {
+            /* the reason why we add '+' is just
+                to force the variable being used 
+                to cast it to number.
+            */
+            setError({
+                title: 'Invalid age',
+                message: 'Please enter a valid age (> 18).'
+            })
+            return
+        }
+        // console.log(enteredUserName, enteredAge)
+        props.onAddUser(enteredUserName, enteredAge)
+        setEnteredUserName('')
+        setEnteredAge('')
+    }
+
+    const usernameChangeHandler = (event) => {
+        setEnteredUserName(event.target.value)
+    }
+
+    const ageChangeHandler = (event) => {
+        setEnteredAge(event.target.value)
+    }
+
+    const errorHandler = () => {
+        setError(null)
+    }
+
+    return (
+        <Wrapper>
+            {error && (<ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />)}
+            <Card className={styles.input}>
+                <form onSubmit={addUserHandler}>
+                    <label htmlFor='userName'>Username</label>
+                    <input id='username' type='text' value={enteredUserName} onChange={usernameChangeHandler} />
+                    <label htmlFor='age'>Age (Years)</label>
+                    <input id='age' type='number' value={enteredAge} onChange={ageChangeHandler} />
+                    {/* <button type='submit'>Add User</button> */}
+                    <Button type='submit'>Add User</Button>
+                </form>
+            </Card>
+        </Wrapper>
+    )
+}
+
+export default AddUser
